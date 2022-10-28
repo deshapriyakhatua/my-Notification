@@ -6,6 +6,8 @@ import androidx.core.content.res.ResourcesCompat;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,6 +18,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 1;
     private Button button;
     private static int NOTIFICATION_ID = 1;
     private static String NOTIFICATION_CHANNEL_ID = "1";
@@ -25,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //PENDING INTENT
+        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,REQUEST_CODE,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.big_image);
 
         // big picture style
         Notification.BigPictureStyle bigPictureStyle = new Notification.BigPictureStyle()
                 .bigPicture(largeIcon)
-                //.bigLargeIcon(largeIcon)
+                .bigLargeIcon(largeIcon)
                 .setBigContentTitle("Content Title")
                 .setSummaryText("Summary Text");
 
@@ -44,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 .setSubText("new subtext")
                 .setChannelId(NOTIFICATION_CHANNEL_ID)
                 .setStyle(bigPictureStyle)
+                .setContentIntent(pendingIntent)
                 .build();
 
         notificationManager.createNotificationChannel(new NotificationChannel(NOTIFICATION_CHANNEL_ID,"General",NotificationManager.IMPORTANCE_HIGH));
