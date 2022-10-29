@@ -25,17 +25,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // Drawable drawable = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_baseline_circle_notifications_24,null);
-        //BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_baseline_circle_notifications_24);;
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.big_image);
 
+        // big picture style
+        Notification.BigPictureStyle bigPictureStyle = new Notification.BigPictureStyle()
+                .bigPicture(largeIcon)
+                //.bigLargeIcon(largeIcon)
+                .setBigContentTitle("Content Title")
+                .setSummaryText("Summary Text");
+
+        // creating notification
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification notification = new Notification.Builder(MainActivity.this)
                 .setLargeIcon(largeIcon)
+                .setContentTitle("new Title")
                 .setSmallIcon(R.drawable.ic_baseline_circle_notifications_24)
                 .setContentText("new content text")
                 .setSubText("new subtext")
                 .setChannelId(NOTIFICATION_CHANNEL_ID)
+                .setStyle(bigPictureStyle)
                 .build();
 
         notificationManager.createNotificationChannel(new NotificationChannel(NOTIFICATION_CHANNEL_ID,"General",NotificationManager.IMPORTANCE_HIGH));
